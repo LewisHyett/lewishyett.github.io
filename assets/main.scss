@@ -13,6 +13,14 @@ $grey-color-dark:  #3f4d4a;
 
 @import "minima";
 
+/* ---- Layout spacing ------------------------------------------------- */
+
+/* Minima's footer sits directly under .page-content; give the page body
+   room so the last section never crowds the footer border. */
+.page-content {
+  padding-bottom: 3rem;
+}
+
 /* ---- Landing page ---------------------------------------------------- */
 
 .hero {
@@ -89,9 +97,14 @@ $grey-color-dark:  #3f4d4a;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.post-card {
+  display: flex;
+}
+
 .post-card__link {
   display: block;
   height: 100%;
+  width: 100%;
   padding: 1.1rem;
   border: 1px solid $grey-color-light;
   border-radius: 8px;
