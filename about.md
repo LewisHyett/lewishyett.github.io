@@ -4,10 +4,23 @@ title: About
 permalink: /about/
 ---
 
-This is a **dummy** about page for a scaffolded GitHub Pages blog.
+I'm Lewis Hyett, a Senior Microsoft Dynamics 365 Business Central developer with
+10+ years of experience building, extending, and supporting BC/NAV solutions.
+I currently work at [ForGood.Tech](https://forgood.tech).
 
-- Built with [Jekyll](https://jekyllrb.com) and the [Minima](https://github.com/jekyll/minima) theme
-- Hosted on GitHub Pages
-- Content here is placeholder text, safe to delete or replace
+## What I do
 
-Replace this copy with a real bio when the site goes live.
+- Design and build AL extensions for Business Central (AppSource and per-tenant)
+- Integrate BC with external systems via APIs, webhooks, and middleware
+- Upgrade and migrate legacy C/AL and NAV customisations to modern AL
+- Focus on clean architecture, performance, testability, and upgrade-safe code
+
+## This blog
+
+Notes on Business Central and AL development — patterns I keep reaching for,
+problems I've had to solve, and things worth writing down so I don't forget them.
+
+## Elsewhere
+
+- GitHub: [@lewishyett](https://github.com/lewishyett)
+- Email: [lewishyett467@gmail.com](mailto:lewishyett467@gmail.com)

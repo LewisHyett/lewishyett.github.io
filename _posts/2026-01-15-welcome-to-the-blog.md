@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Welcome to the Blog"
-date: 2026-09-02 09:00:00 +0000
+date: 2026-01-15 09:00:00 +0000
 categories: meta
 tags: [announcement, jekyll]
 ---
