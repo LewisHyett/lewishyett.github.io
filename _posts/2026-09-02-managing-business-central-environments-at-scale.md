@@ -1,6 +1,15 @@
-# One Extension for Every Customer Business Central Environment
+---
+layout: post
+title: "Managing Business Central Environments at Scale"
+date: 2026-09-02 09:00:00 +0000
+description: >-
+  How I built one Business Central extension to manage every customer tenant,
+  environment, app rollout, and admin action from a single place.
+categories: [business-central]
+tags: [business-central, environments, extensions, automation, admin]
 
-Sep 2, 2026
+# One Extension for Every Customer Business Central Environment
+---
 
 ## TL;DR
 
