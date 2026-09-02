@@ -1,0 +1,33 @@
+---
+layout: default
+title: Home
+---
+
+<section class="hero">
+  <h1 class="hero__title">Lewis Hyett</h1>
+  <p class="hero__tagline">
+    Notes on Business Central, AL development, and the occasional tangent.
+  </p>
+  <p class="hero__actions">
+    <a class="btn" href="{{ '/posts/' | relative_url }}">Read the blog</a>
+    <a class="btn btn--ghost" href="{{ '/about/' | relative_url }}">About me</a>
+  </p>
+</section>
+
+<section class="latest">
+  <h2 class="latest__heading">Latest posts</h2>
+
+  <ul class="post-cards">
+    {% for post in site.posts limit:4 %}
+      <li class="post-card">
+        <a class="post-card__link" href="{{ post.url | relative_url }}">
+          <span class="post-card__date">{{ post.date | date: site.minima.date_format }}</span>
+          <span class="post-card__title">{{ post.title | escape }}</span>
+          <span class="post-card__excerpt">{{ post.excerpt | strip_html | truncatewords: 25 }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <p><a href="{{ '/posts/' | relative_url }}">All posts &rarr;</a></p>
+</section>

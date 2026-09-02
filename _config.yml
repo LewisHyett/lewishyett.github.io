@@ -19,6 +19,7 @@ minima:
     github: lewishyett
 
 header_pages:
+  - posts.html
   - about.md
 
 defaults:
