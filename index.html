@@ -15,7 +15,10 @@ title: Home
 </section>
 
 <section class="latest">
-  <h2 class="latest__heading">Latest posts</h2>
+  <div class="latest__header">
+    <h2 class="latest__heading">Latest posts</h2>
+    <a class="latest__all" href="{{ '/posts/' | relative_url }}">All posts &rarr;</a>
+  </div>
 
   <ul class="post-cards">
     {% for post in site.posts limit:4 %}
@@ -28,6 +31,4 @@ title: Home
       </li>
     {% endfor %}
   </ul>
-
-  <p><a href="{{ '/posts/' | relative_url }}">All posts &rarr;</a></p>
 </section>

@@ -2,6 +2,15 @@
 # Front matter (even empty) tells Jekyll to process this file with SCSS.
 ---
 
+/* ---- Palette: Deep Teal (overrides Minima defaults) ---------------- */
+
+$brand-color:      #0f6d68;
+$text-color:       #12211f;
+$background-color: #fbfcfb;
+$grey-color:       #5f7370;
+$grey-color-light: #e0e6e4;
+$grey-color-dark:  #3f4d4a;
+
 @import "minima";
 
 /* ---- Landing page ---------------------------------------------------- */
@@ -52,9 +61,23 @@
 
 /* ---- Post cards ----------------------------------------------------- */
 
+.latest__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .latest__heading {
   font-size: 1.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.latest__all {
+  flex: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .post-cards {
