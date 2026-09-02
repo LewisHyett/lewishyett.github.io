@@ -341,3 +341,250 @@ The console is the interactive front end; the cache underneath it is really just
 a small data warehouse for your Business Central estate, and that is the part
 with the most room to grow.
 
+## Full Architecture Diagram
+graph TD
+    subgraph UI["User Interface (Business Central)"]
+        RC["Operations Role Center<br/>+ activity cues"]
+        OV["Estate Overview<br/>(tenant → env → app tree)"]
+        TEN["Customer Tenants<br/>list / card"]
+        ENV["Customer Environments<br/>list / card"]
+        APP["Environment Apps<br/>+ App Updates"]
+        SCH["Environment Schedule"]
+        DEP["Extension Deployments"]
+        LOG["Action Log"]
+        SET["Partner Setup<br/>+ App Registrations"]
+    end
+
+    subgraph DOMAIN["Domain / Operation Layer"]
+        OPI["Operation interface<br/>(Validate → BuildRequestBody → Execute → Poll → HandleSuccess)"]
+        LIFE["Lifecycle ops<br/>Copy · Delete · Restore · Recover"]
+        SCHED["Scheduling ops<br/>Set Version+Date · Set Update Time · Reschedule"]
+        APPS["App ops<br/>Install · Update · Uninstall · Cancel"]
+        DEPO["Deploy Extension op<br/>+ dependency batch builder"]
+        ALM["Action Log Manager<br/>(status, queue, dispatch)"]
+    end
+
+    subgraph DATA["Local Cache (BC tables)"]
+        TT["Customer Tenant"]
+        ET["Customer Environment"]
+        AT["App / App Update"]
+        DT["Ext. Deployment"]
+        LT["Action Log"]
+        PT["Partner Setup / App Registration"]
+    end
+
+    subgraph JOBS["Background Jobs (Job Queue + Task Scheduler)"]
+        J1["Sync Customers (daily)"]
+        J2["Refresh Environments (2h)"]
+        J3["Get Used Storage (6h)"]
+        J4["Validate Tenant Access"]
+        J5["Action Log poller (1m)"]
+        J6["Deploy Extensions dispatcher (5m + on-demand)"]
+    end
+
+    subgraph CONN["Connectivity Layer"]
+        AUTH["Auth<br/>Secure App Model · S2S tokens<br/>secrets in Isolated Storage"]
+        PCAPI["Partner Centre API client"]
+        ACAPI["Admin Centre API client"]
+        NUGET["NuGet v3 feed client"]
+    end
+
+    subgraph EXT["External Services"]
+        PC["Microsoft Partner Centre API"]
+        AC["BC Admin Centre API<br/>(environments, apps, storage, pteInstall)"]
+        FEED["Package feed (.app + .nuspec)"]
+        AAD["Entra ID / login.microsoftonline.com"]
+    end
+
+    UI --> DOMAIN
+    DOMAIN --> DATA
+    DOMAIN --> ALM
+    ALM --> LT
+    UI -. reads .-> DATA
+
+    JOBS --> DOMAIN
+    JOBS --> CONN
+    DOMAIN --> CONN
+
+    CONN --> AUTH
+    AUTH --> AAD
+    PCAPI --> PC
+    ACAPI --> AC
+    NUGET --> FEED
+
+    PC -. customers .-> DATA
+    AC -. env / app / storage .-> DATA
+```
+
+## Operation lifecycle
+
+```mermaid
+sequenceDiagram
+    actor U as Operator
+    participant P as Operation page
+    participant O as Operation (interface impl)
+    participant L as Action Log
+    participant A as Admin Centre API
+    participant Q as Action Log poller (job)
+
+    U->>P: Select rows, choose action, set options
+    P->>O: Validate(row)
+    alt invalid
+        O-->>P: blocked (clear message)
+    else valid
+        O->>L: InitializeActionLog (Pending)
+        alt Execute immediately = OFF
+            L-->>U: stays Pending for review
+        else Execute immediately = ON
+            O->>O: BuildRequestBody
+            O->>A: Execute (POST / PATCH)
+            A-->>O: Operation ID
+            O->>L: status In Progress (+ Operation ID)
+        end
+    end
+
+    loop every minute
+        Q->>L: find In Progress rows
+        Q->>A: poll Operation ID
+        A-->>Q: Succeeded / Failed
+        Q->>L: update status, completion, error
+        Q->>L: release next Queued op for that environment
+        Q-->>Data: refresh affected cache records
+    end
+```
+
+## Deployment dispatch
+
+# Environment Manager — Architecture
+
+## Layered view
+
+```mermaid
+graph TD
+    subgraph UI["User Interface (Business Central)"]
+        RC["Operations Role Center<br/>+ activity cues"]
+        OV["Estate Overview<br/>(tenant → env → app tree)"]
+        TEN["Customer Tenants<br/>list / card"]
+        ENV["Customer Environments<br/>list / card"]
+        APP["Environment Apps<br/>+ App Updates"]
+        SCH["Environment Schedule"]
+        DEP["Extension Deployments"]
+        LOG["Action Log"]
+        SET["Partner Setup<br/>+ App Registrations"]
+    end
+
+    subgraph DOMAIN["Domain / Operation Layer"]
+        OPI["Operation interface<br/>(Validate → BuildRequestBody → Execute → Poll → HandleSuccess)"]
+        LIFE["Lifecycle ops<br/>Copy · Delete · Restore · Recover"]
+        SCHED["Scheduling ops<br/>Set Version+Date · Set Update Time · Reschedule"]
+        APPS["App ops<br/>Install · Update · Uninstall · Cancel"]
+        DEPO["Deploy Extension op<br/>+ dependency batch builder"]
+        ALM["Action Log Manager<br/>(status, queue, dispatch)"]
+    end
+
+    subgraph DATA["Local Cache (BC tables)"]
+        TT["Customer Tenant"]
+        ET["Customer Environment"]
+        AT["App / App Update"]
+        DT["Ext. Deployment"]
+        LT["Action Log"]
+        PT["Partner Setup / App Registration"]
+    end
+
+    subgraph JOBS["Background Jobs (Job Queue + Task Scheduler)"]
+        J1["Sync Customers (daily)"]
+        J2["Refresh Environments (2h)"]
+        J3["Get Used Storage (6h)"]
+        J4["Validate Tenant Access"]
+        J5["Action Log poller (1m)"]
+        J6["Deploy Extensions dispatcher (5m + on-demand)"]
+    end
+
+    subgraph CONN["Connectivity Layer"]
+        AUTH["Auth<br/>Secure App Model · S2S tokens<br/>secrets in Isolated Storage"]
+        PCAPI["Partner Centre API client"]
+        ACAPI["Admin Centre API client"]
+        NUGET["NuGet v3 feed client"]
+    end
+
+    subgraph EXT["External Services"]
+        PC["Microsoft Partner Centre API"]
+        AC["BC Admin Centre API<br/>(environments, apps, storage, pteInstall)"]
+        FEED["Package feed (.app + .nuspec)"]
+        AAD["Entra ID / login.microsoftonline.com"]
+    end
+
+    UI --> DOMAIN
+    DOMAIN --> DATA
+    DOMAIN --> ALM
+    ALM --> LT
+    UI -. reads .-> DATA
+
+    JOBS --> DOMAIN
+    JOBS --> CONN
+    DOMAIN --> CONN
+
+    CONN --> AUTH
+    AUTH --> AAD
+    PCAPI --> PC
+    ACAPI --> AC
+    NUGET --> FEED
+
+    PC -. customers .-> DATA
+    AC -. env / app / storage .-> DATA
+```
+
+## Operation lifecycle
+
+```mermaid
+sequenceDiagram
+    actor U as Operator
+    participant P as Operation page
+    participant O as Operation (interface impl)
+    participant L as Action Log
+    participant A as Admin Centre API
+    participant Q as Action Log poller (job)
+
+    U->>P: Select rows, choose action, set options
+    P->>O: Validate(row)
+    alt invalid
+        O-->>P: blocked (clear message)
+    else valid
+        O->>L: InitializeActionLog (Pending)
+        alt Execute immediately = OFF
+            L-->>U: stays Pending for review
+        else Execute immediately = ON
+            O->>O: BuildRequestBody
+            O->>A: Execute (POST / PATCH)
+            A-->>O: Operation ID
+            O->>L: status In Progress (+ Operation ID)
+        end
+    end
+
+    loop every minute
+        Q->>L: find In Progress rows
+        Q->>A: poll Operation ID
+        A-->>Q: Succeeded / Failed
+        Q->>L: update status, completion, error
+        Q->>L: release next Queued op for that environment
+        Q-->>Data: refresh affected cache records
+    end
+```
+
+## Deployment dispatch
+
+```mermaid
+stateDiagram-v2
+    [*] --> Scheduled
+    Scheduled --> Uploading: dispatcher picks it up<br/>(one per environment at a time)
+    Uploading --> Installing: package sent to pteInstall
+    Installing --> Completed: Admin Centre confirms
+    Uploading --> Failed
+    Installing --> Failed
+    Scheduled --> Cancelled: operator cancels
+    Scheduled --> Skipped: version already installed
+    Failed --> Scheduled: Retry
+    Completed --> [*]
+    Cancelled --> [*]
+    Skipped --> [*]
+```
