@@ -114,39 +114,13 @@ That status matters because the environment and storage refresh jobs **only
 process tenants marked Accessible**. A tenant stuck on Access Denied or Unknown
 is a visible flag on the tenant list telling me its credentials need attention —
 nothing about that customer refreshes until it is fixed.
+
 ![API Access Status](/assets/images/EnvironmentManager/APIAccessStatus.png)
-
-```mermaid
-flowchart TB
-    START(["Sync Customers job — runs daily"]) --> TOKEN
-
-    subgraph AUTH["Authenticate (Secure Application Model)"]
-        TOKEN["POST token request to Entra ID<br/>client id + secret + stored refresh token"] --> RESP{"new refresh<br/>token returned?"}
-        RESP -->|yes| ROT["rotate: store new refresh token<br/>in Isolated Storage"] --> ACC["hold access token"]
-        RESP -->|no| ACC
-    end
-
-    ACC --> GET["GET /v1/customers?size=300<br/>Partner Centre API, Bearer token"]
-    GET --> PARSE["read items[] from response"]
-    PARSE --> LOOP{"for each customer"}
-    LOOP --> EXIST{"already in<br/>Customer Tenant table?"}
-    EXIST -->|no| INS["insert tenant<br/>Access Status = Unknown<br/>default to a shared app registration"]
-    EXIST -->|yes| UPD["update name + domain"]
-    INS --> NEXT
-    UPD --> NEXT
-    NEXT{"more pages?<br/>links.next"} -->|yes| GET
-    NEXT -->|no| DONE(["customer list in sync"])
-
-    DONE -.->|manual, per new tenant| SETAUTH["set Admin Centre credentials<br/>own or shared app registration"]
-    SETAUTH --> VALIDATE["Validate Tenant Access job<br/>→ Accessible / Access Denied / Unknown"]
-    VALIDATE --> REFRESH["Accessible tenants only:<br/>Refresh Environments + Get Storage jobs"]
-```
-
 
 ## What you can see
 
-Before any action, there is the picture — and honestly the picture alone was
-worth the effort.
+Before any of the operations, the console just gives me a single place to look at
+the estate. That part alone earned its keep.
 
 - **Customer tenants.** Every customer with capacity and storage summaries,
   colour-coded so anything near a quota stands out.
@@ -156,9 +130,11 @@ worth the effort.
 - **Apps per environment.** What is installed, and what has a newer version
   available.
 
-![Capcity Controls](/assets/images/EnvironmentManager/CapacityFields.png)
-
 ![Customer Environments](/assets/images/EnvironmentManager/CustomerEnvironments.png)
+
+![Capacity and storage columns](/assets/images/EnvironmentManager/CapacityFields.png)
+
+![Environment Apps](/assets/images/EnvironmentManager/EnvironmentApps.png)
 
 The refresh happens on its own. Scheduled background jobs refresh environment
 details every couple of hours and check storage a few times a day, on top of the
@@ -167,37 +143,38 @@ single tenant or environment on demand when you need the very latest.
 
 ## What you can do: operations
 
-I made every change follow the same four-step shape, mostly so I would not have to
-remember how each one worked.
-
-**1. Choose.** Select one or more rows in a list.
-
-**2. Set options.** A dialog asks for exactly what the operation needs — a new
-name and type for a copy, a point in time for a restore, a version and date for
-an upgrade.
-
-**3. Pick an execution style.** Every dialog has an *Execute immediately* toggle.
-On, and the request goes to the API now. Off, and the operation is logged as
-**Pending** for you to review before it is sent. That single toggle is the
-difference between "trust me" and "let me check the request first."
-
-**4. Monitor.** The operation appears in the Action Log with a live status.
+Each operation follows the same pattern: select one or more rows, set only the
+options that matter, choose whether to run now or leave it **Pending**, then
+monitor it in the Action Log. The available environment operations are:
 
 ![Environment Operations](/assets/images/EnvironmentManager/EnvironmentOperationsRibbon.png)
 
 ![Copy Environment](/assets/images/EnvironmentManager/CopyEnvironment.png)
 
-The operations themselves cover the environment lifecycle and its scheduling:
-
-| Area | Operations |
+| Operation | What it does |
 |---|---|
-| Lifecycle | Copy an environment, restore it to a point in time, recover a soft-deleted one, delete a non-production one |
-| Scheduling | Set a target version and upgrade date, set the update time window, reschedule an existing upgrade |
-| Apps | Schedule app updates, coordinate installs and uninstalls, cancel an update in progress |
+| Copy | Creates a new environment from an existing one, with a chosen name and environment type. |
+| Restore | Creates an environment from a selected point in another environment's restore history. |
+| Recover | Brings a soft-deleted environment back before permanent deletion. |
+| Delete | Removes an eligible environment, with extra protection around production. |
+| Set target version and date | Chooses the next platform version and when the upgrade should run. |
+| Set update time | Defines the preferred daily window for updates. |
+| Reschedule upgrade | Moves an upgrade that already has a date, with an option to ignore the normal window. |
+| Set app update cadence | Controls whether apps update by default or alongside major or minor environment upgrades. |
+| Deploy extensions | Uploads an `.app` file or deploys selected products from the package feed. |
 
-And because you select the rows first, any of these can run across many
-environments in one pass. Pick twelve environments, choose *Upgrade Apps*, set
-the options once.
+Apps have their own focused actions once you drill into an environment:
+
+| Operation | What it does |
+|---|---|
+| Refresh apps | Reloads the installed apps and available versions for the selected environments. |
+| Upgrade apps | Updates selected apps that have a newer Microsoft-managed version available, now or on a schedule. |
+| Cancel app update | Cancels a scheduled app update before it runs. |
+| Uninstall apps | Removes selected apps, optionally with dependants and app data. |
+| Upgrade from package feed | Rolls selected per-tenant extensions forward to the latest approved package and resolves dependencies. |
+
+Because the actions start from selected rows, the same choices can be applied to
+many environments or apps in one pass rather than repeated customer by customer.
 
 ## The spine: one action log for everything
 
