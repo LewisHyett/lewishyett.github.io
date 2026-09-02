@@ -24,7 +24,7 @@ Hopefully some of it is useful to someone else too.
 
 ## Away from the keyboard
 
-When I'm not writing code, you'll usually find me playing football, padel, or chess.
+When I'm not writing code, you'll usually find me playing padel, chess or half way up a mountain. 
 
 ## Elsewhere
 
