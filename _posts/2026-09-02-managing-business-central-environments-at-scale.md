@@ -270,9 +270,9 @@ Rolling a product out to a set of customers ties the whole thing together.
    moving `Scheduled → Uploading → Installing → Completed`. A failed row keeps its
    error message and a **Retry** action.
 
-[!Extension Selection](/assets/images/EnvironmentManager/DeploymentSelection.png)
+![Extension Selection](/assets/images/EnvironmentManager/DeploymentSelection.png)
 
-[!Extension Deployments](/assets/images/EnvironmentManager/ExtensionDeployments.png)
+![Extension Deployments](/assets/images/EnvironmentManager/ExtensionDeployments.png)
 
 Each deployment is also an entry in the same Action Log as everything else, so it
 is audited and retained exactly like a copy or a restore.
