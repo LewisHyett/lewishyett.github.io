@@ -22,7 +22,13 @@ Open http://localhost:4000.
 
 ## Deploy
 
-Push to `main`. GitHub Pages builds and serves it at
+Deployment runs through GitHub Actions (`.github/workflows/jekyll.yml`), not the
+legacy `github-pages` gem build.
+
+One-time setup: on GitHub, **Settings → Pages → Build and deployment → Source →
+GitHub Actions**.
+
+After that, every push to `main` builds and publishes to
 `https://lewishyett.github.io`.
 
 All content is placeholder — replace before going live.
