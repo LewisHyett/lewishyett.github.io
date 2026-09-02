@@ -4,21 +4,27 @@ title: About
 permalink: /about/
 ---
 
-I'm Lewis Hyett, a Senior Microsoft Dynamics 365 Business Central developer with
-10+ years of experience building, extending, and supporting BC/NAV solutions.
-I currently work at [ForGood.Tech](https://forgood.tech).
+I'm Lewis Hyett. I work with Microsoft Dynamics 365 Business Central at [ForGood.Tech](https://forgood.tech/), mostly building things with Business Central and AL.
 
-## What I do
+I've been around Business Central and NAV long enough to have accumulated a fair collection of things that work, things that don't, and things I've had to learn the hard way.
 
-- Design and build AL extensions for Business Central (AppSource and per-tenant)
-- Integrate BC with external systems via APIs, webhooks, and middleware
-- Upgrade and migrate legacy C/AL and NAV customisations to modern AL
-- Focus on clean architecture, performance, testability, and upgrade-safe code
+These days that means AL extensions and integrations, upgrading old NAV customisations, and setting up CI/CD pipelines — plus some Power Platform when Business Central needs a little help from its friends.
+
+I'm also genuinely into the shifting world of AI development at the moment — how the tooling is changing, what it's actually good for, and where it fits into a codebase without making a mess. I'm slowly working out how to bring more of it into my day-to-day, rather than treating it as a novelty.
+
+I like understanding why something's broken before I fix it, and I try not to leave landmines for future-me (or anyone else who has to touch the code six months from now).
 
 ## This blog
 
-Notes on Business Central and AL development — patterns I keep reaching for,
-problems I've had to solve, and things worth writing down so I don't forget them.
+This is where I write down things I learn while working with Business Central and AL.
+
+Expect notes on patterns I keep coming back to, problems I've had to solve, interesting bits of AL, and the occasional thing I've written down mainly so I don't have to figure it out again later.
+
+Hopefully some of it is useful to someone else too.
+
+## Away from the keyboard
+
+When I'm not writing code, you'll usually find me playing football, padel, or chess.
 
 ## Elsewhere
 
