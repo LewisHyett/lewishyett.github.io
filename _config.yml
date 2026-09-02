@@ -1,0 +1,35 @@
+title: Lewis Hyett
+email: lewishyett467@gmail.com
+description: >-
+  A dummy GitHub Pages blog suite — notes on Business Central, AL development,
+  and whatever else is on my mind.
+baseurl: ""
+url: "https://lewishyett.github.io"
+github_username: lewishyett
+
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+minima:
+  date_format: "%b %-d, %Y"
+  social_links:
+    github: lewishyett
+
+header_pages:
+  - about.md
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
