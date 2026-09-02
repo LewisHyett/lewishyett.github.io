@@ -19,6 +19,7 @@ minima:
 
 header_pages:
   - posts.html
+  - search.html
   - about.md
 
 defaults:

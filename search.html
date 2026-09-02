@@ -1,0 +1,95 @@
+---
+layout: default
+title: Search
+permalink: /search/
+---
+
+<h1 class="page-heading">Search</h1>
+
+<input
+  type="search"
+  id="search-input"
+  class="search-input"
+  placeholder="Search posts&hellip;"
+  autocomplete="off"
+  autofocus
+/>
+
+<p id="search-status" class="search-status" aria-live="polite"></p>
+
+<ul id="search-results" class="archive-list"></ul>
+
+<script>
+  (function () {
+    var input = document.getElementById('search-input');
+    var status = document.getElementById('search-status');
+    var results = document.getElementById('search-results');
+    var index = [];
+    var ready = false;
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function render(query) {
+      results.innerHTML = '';
+      var q = query.trim().toLowerCase();
+      if (!q) {
+        status.textContent = ready ? '' : 'Loading index…';
+        return;
+      }
+      var terms = q.split(/\s+/);
+      var matches = index.filter(function (post) {
+        var hay = (post.title + ' ' + post.tags + ' ' + post.description + ' ' + post.content).toLowerCase();
+        return terms.every(function (t) { return hay.indexOf(t) !== -1; });
+      });
+
+      status.textContent = matches.length
+        ? matches.length + ' result' + (matches.length === 1 ? '' : 's')
+        : 'No posts match “' + query.trim() + '”';
+
+      matches.forEach(function (post) {
+        var li = document.createElement('li');
+        li.className = 'archive-item';
+        li.innerHTML =
+          '<span class="archive-item__date">' + escapeHtml(post.date) + '</span>' +
+          '<span><a href="' + escapeHtml(post.url) + '">' + escapeHtml(post.title) + '</a>' +
+          (post.description ? '<span class="search-result__desc">' + escapeHtml(post.description) + '</span>' : '') +
+          '</span>';
+        results.appendChild(li);
+      });
+    }
+
+    function currentQuery() {
+      return new URLSearchParams(window.location.search).get('q') || '';
+    }
+
+    var debounce;
+    input.addEventListener('input', function () {
+      clearTimeout(debounce);
+      debounce = setTimeout(function () {
+        var params = new URLSearchParams(window.location.search);
+        if (input.value) { params.set('q', input.value); } else { params.delete('q'); }
+        var qs = params.toString();
+        history.replaceState(null, '', qs ? '?' + qs : window.location.pathname);
+        render(input.value);
+      }, 120);
+    });
+
+    status.textContent = 'Loading index…';
+    fetch('{{ "/search.json" | relative_url }}')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        index = data;
+        ready = true;
+        var q = currentQuery();
+        if (q) { input.value = q; }
+        render(input.value);
+      })
+      .catch(function () {
+        status.textContent = 'Could not load the search index.';
+      });
+  })();
+</script>

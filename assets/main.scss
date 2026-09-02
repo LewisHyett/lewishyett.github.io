@@ -149,3 +149,34 @@ $grey-color-dark:  #3f4d4a;
   color: $grey-color;
   font-size: 0.9rem;
 }
+
+/* ---- Search ------------------------------------------------------- */
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border: 1px solid $grey-color-light;
+  border-radius: 6px;
+  background: $background-color;
+  color: $text-color;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: $brand-color;
+}
+
+.search-status {
+  color: $grey-color;
+  font-size: 0.9rem;
+  margin: 0.7rem 0 1rem;
+  min-height: 1.2em;
+}
+
+.search-result__desc {
+  display: block;
+  color: $grey-color-dark;
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+}
