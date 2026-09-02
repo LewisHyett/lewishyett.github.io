@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Automating Azure DevOps Project Creation for Every New Customer"
+title: "Automating Azure DevOps Project Creation"
 date: 2026-09-02 09:00:00 +0000
-categories: devops
+categories: [devops]
 tags: [azure-devops, automation, powershell, pipelines]
 ---
 
