@@ -26,7 +26,7 @@ title: Home
         <a class="post-card__link" href="{{ post.url | relative_url }}">
           <span class="post-card__date">{{ post.date | date: site.minima.date_format }}</span>
           <span class="post-card__title">{{ post.title | escape }}</span>
-          <span class="post-card__excerpt">{{ post.excerpt | strip_html | truncatewords: 25 }}</span>
+          <span class="post-card__excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 30 }}</span>
         </a>
       </li>
     {% endfor %}

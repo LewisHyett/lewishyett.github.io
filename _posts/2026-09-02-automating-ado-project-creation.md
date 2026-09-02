@@ -2,6 +2,10 @@
 layout: post
 title: "Automating Azure DevOps Project Creation"
 date: 2026-09-01 09:00:00 +0000
+description: >-
+  Turning a 15-minute Azure DevOps project-setup runbook into a one-click
+  pipeline: a PowerShell script driving the REST API, and the parts that took
+  longest to get right.
 categories: [devops]
 tags: [azure-devops, automation, powershell, pipelines]
 ---
