@@ -22,7 +22,7 @@ environments in one pass; scheduled upgrades and extension rollouts; and a singl
 action log that records what ran, against what, by whom, and when. This post is a
 tour of what I built and why it is put together the way it is.
 
-![Customer Tenants](/assets/images/EnvironmentManager/customer-tenants.png)
+![Customer Tenants](/assets/images/EnvironmentManager/customer-tenants.png){: width="1742" height="182"}
 
 ## The problem with one-tenant-at-a-time
 
@@ -115,7 +115,7 @@ process tenants marked Accessible**. A tenant stuck on Access Denied or Unknown
 is a visible flag on the tenant list telling me its credentials need attention —
 nothing about that customer refreshes until it is fixed.
 
-![API Access Status](/assets/images/EnvironmentManager/APIAccessStatus.png)
+![API Access Status](/assets/images/EnvironmentManager/APIAccessStatus.png){: loading="lazy" decoding="async" width="294" height="242"}
 
 ## What you can see
 
@@ -130,11 +130,11 @@ the estate. That part alone earned its keep.
 - **Apps per environment.** What is installed, and what has a newer version
   available.
 
-![Customer Environments](/assets/images/EnvironmentManager/CustomerEnvironments.png)
+![Customer Environments](/assets/images/EnvironmentManager/CustomerEnvironments.png){: loading="lazy" decoding="async" width="1788" height="347"}
 
-![Capacity and storage columns](/assets/images/EnvironmentManager/CapacityFields.png)
+![Capacity and storage columns](/assets/images/EnvironmentManager/CapacityFields.png){: loading="lazy" decoding="async" width="599" height="297"}
 
-![Environment Apps](/assets/images/EnvironmentManager/EnvironmentApps.png)
+![Environment Apps](/assets/images/EnvironmentManager/EnvironmentApps.png){: loading="lazy" decoding="async" width="1799" height="329"}
 
 The refresh happens on its own. Scheduled background jobs refresh environment
 details every couple of hours and check storage a few times a day, on top of the
@@ -147,9 +147,9 @@ Each operation follows the same pattern: select one or more rows, set only the
 options that matter, choose whether to run now or leave it **Pending**, then
 monitor it in the Action Log. The available environment operations are:
 
-![Environment Operations](/assets/images/EnvironmentManager/EnvironmentOperationsRibbon.png)
+![Environment Operations](/assets/images/EnvironmentManager/EnvironmentOperationsRibbon.png){: loading="lazy" decoding="async" width="805" height="107"}
 
-![Copy Environment](/assets/images/EnvironmentManager/CopyEnvironment.png)
+![Copy Environment](/assets/images/EnvironmentManager/CopyEnvironment.png){: loading="lazy" decoding="async" width="646" height="261"}
 
 | Operation | What it does |
 |---|---|
@@ -194,7 +194,7 @@ and when.
 The log is pruned automatically after a set retention period, so it stays useful
 without growing forever.
 
-![Action Log](/assets/images/EnvironmentManager/ActionLog.png)
+![Action Log](/assets/images/EnvironmentManager/ActionLog.png){: loading="lazy" decoding="async" width="1424" height="253"}
 
 ```mermaid
 flowchart TB
@@ -247,9 +247,9 @@ Rolling a product out to a set of customers ties the whole thing together.
    moving `Scheduled → Uploading → Installing → Completed`. A failed row keeps its
    error message and a **Retry** action.
 
-![Extension Selection](/assets/images/EnvironmentManager/DeploymentSelection.png)
+![Extension Selection](/assets/images/EnvironmentManager/DeploymentSelection.png){: loading="lazy" decoding="async" width="641" height="391"}
 
-![Extension Deployments](/assets/images/EnvironmentManager/ExtensionDeployments.png)
+![Extension Deployments](/assets/images/EnvironmentManager/ExtensionDeployments.png){: loading="lazy" decoding="async" width="1797" height="230"}
 
 ```mermaid
 stateDiagram-v2

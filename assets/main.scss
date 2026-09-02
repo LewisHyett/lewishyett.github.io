@@ -21,6 +21,13 @@ $grey-color-dark:  #3f4d4a;
   padding-bottom: 3rem;
 }
 
+/* Images carry intrinsic width/height so the browser can reserve space before
+   they load. Minima sets only max-width, so without this the height attribute
+   would win and squash them. */
+img[width][height] {
+  height: auto;
+}
+
 /* ---- Landing page ---------------------------------------------------- */
 
 .hero {
