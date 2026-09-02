@@ -21,7 +21,7 @@ title: Home
   </div>
 
   <ul class="post-cards">
-    {% for post in site.posts limit:4 %}
+    {% for post in site.posts limit:6 %}
       <li class="post-card">
         <a class="post-card__link" href="{{ post.url | relative_url }}">
           <span class="post-card__date">{{ post.date | date: site.minima.date_format }}</span>
