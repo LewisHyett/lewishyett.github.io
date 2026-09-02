@@ -50,6 +50,10 @@ once and never click through it again.
 
 ## The approach: one script, one pipeline
 
+> A sanitised, runnable copy of both files — with every organisation-, customer-,
+> and team-specific value replaced by a described placeholder — is on GitHub:
+> [LewisHyett/BCExamples / ADO-Project-Creation](https://github.com/LewisHyett/BCExamples/tree/main/ADO-Project-Creation).
+
 The solution has two files:
 
 ```
@@ -190,3 +194,9 @@ group controlling who can run it.
   configuration record lives with the project itself
 
 But even as it stands, the tedious thing is gone. That was the whole point.
+
+---
+
+**Sample code:** [LewisHyett/BCExamples / ADO-Project-Creation](https://github.com/LewisHyett/BCExamples/tree/main/ADO-Project-Creation)
+— the pipeline definition and the full PowerShell script, sanitised, with a
+README explaining every placeholder and the required PAT scopes.
