@@ -40,9 +40,7 @@ three rows configured identically:
 Every column set to "All Fields". Change logging was switched on globally, so all
 three were live.
 
-[Screenshot: Change Log Setup (Table) list filtered on "Job", showing the three
-Job Queue rows with Log Insertion, Log Modification and Log Deletion each set to
-"All Fields".]
+![Change Log Setup](/assets/images/Change%20Log%20Setup/Change-log-Setup.png)
 
 I doubt anyone set this deliberately. It looks like someone enabled change
 logging, selected "all tables" in a hurry, or copied setup data between
