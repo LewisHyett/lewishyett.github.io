@@ -102,16 +102,18 @@ img[width][height] {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
 }
 
 .post-card {
   display: flex;
+  min-width: 0;
 }
 
 .post-card__link {
-  display: block;
-  height: 100%;
-  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 1.1rem;
   border: 1px solid $grey-color-light;
   border-radius: 8px;
