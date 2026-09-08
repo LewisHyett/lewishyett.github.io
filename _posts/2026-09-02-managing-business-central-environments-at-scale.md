@@ -23,7 +23,7 @@ extension rollouts; and one action log that records what ran, against what, by
 whom, and when. This is a tour of what I built and why it's put together the way
 it is.
 
-![Customer Tenants](https://lewishyett.github.io/assets/images/EnvironmentManager/customer-tenants.png)
+![Customer Tenants](/assets/images/EnvironmentManager/customer-tenants.png){: width="1742" height="182"}
 
 ## The problem with one-tenant-at-a-time
 
@@ -50,11 +50,11 @@ shown in bold; an upgrade due within a few days shows amber.
 - **Apps per environment.** What's installed, and what has a newer version
 available.
 
-![Customer Environments](https://lewishyett.github.io/assets/images/EnvironmentManager/CustomerEnvironments.png)
+![Customer Environments](/assets/images/EnvironmentManager/CustomerEnvironments.png){: width="1788" height="347" loading="lazy"}
 
-![Capacity and storage columns](https://lewishyett.github.io/assets/images/EnvironmentManager/CapacityFields.png)
+![Capacity and storage columns](/assets/images/EnvironmentManager/CapacityFields.png){: width="599" height="297" loading="lazy"}
 
-![Environment Apps](https://lewishyett.github.io/assets/images/EnvironmentManager/EnvironmentApps.png)
+![Environment Apps](/assets/images/EnvironmentManager/EnvironmentApps.png){: width="1799" height="329" loading="lazy"}
 
 The refresh happens on its own. Scheduled background jobs refresh environment
 details every couple of hours and check storage a few times a day, on top of a
@@ -67,9 +67,9 @@ Each operation follows the same pattern: select one or more rows, set only the
 options that matter, choose whether to run now or leave it **Pending**, then
 monitor it in the Action Log. The available environment operations are:
 
-![Environment Operations](https://lewishyett.github.io/assets/images/EnvironmentManager/EnvironmentOperationsRibbon.png)
+![Environment Operations](/assets/images/EnvironmentManager/EnvironmentOperationsRibbon.png){: width="805" height="107" loading="lazy"}
 
-![Copy Environment](https://lewishyett.github.io/assets/images/EnvironmentManager/CopyEnvironment.png)
+![Copy Environment](/assets/images/EnvironmentManager/CopyEnvironment.png){: width="646" height="261" loading="lazy"}
 
 | Operation                   | What it does                                                                              |
 | ---------------------------- | ------------------------------------------------------------------------------------------ |
@@ -113,9 +113,9 @@ finishes.
 moving `Scheduled → Uploading → Installing → Completed`. A failed row keeps its
 error message and a **Retry** action.
 
-![Extension Selection](https://lewishyett.github.io/assets/images/EnvironmentManager/DeploymentSelection.png)
+![Extension Selection](/assets/images/EnvironmentManager/DeploymentSelection.png){: width="641" height="391" loading="lazy"}
 
-![Extension Deployments](https://lewishyett.github.io/assets/images/EnvironmentManager/ExtensionDeployments.png)
+![Extension Deployments](/assets/images/EnvironmentManager/ExtensionDeployments.png){: width="1797" height="230" loading="lazy"}
 
 Each deployment moves through the same lifecycle: `Scheduled` when queued,
 `Uploading` once the dispatcher picks it up, `Installing` once the package
@@ -192,7 +192,7 @@ first
 The log is pruned automatically after a set retention period, so it stays useful
 without growing forever.
 
-![Action Log](https://lewishyett.github.io/assets/images/EnvironmentManager/ActionLog.png)
+![Action Log](/assets/images/EnvironmentManager/ActionLog.png){: width="1424" height="253" loading="lazy"}
 
 This is the part I enjoyed building most. The log *is* the state machine. A
 long operation returns an ID; a background poller periodically checks that ID and
@@ -254,7 +254,7 @@ process tenants marked Accessible**. A tenant stuck on Access Denied or Unknown
 is a visible flag on the tenant list telling me its credentials need attention —
 nothing about that customer refreshes until it's fixed.
 
-![API Access Status](https://lewishyett.github.io/assets/images/EnvironmentManager/APIAccessStatus.png)
+![API Access Status](/assets/images/EnvironmentManager/APIAccessStatus.png){: width="294" height="242" loading="lazy"}
 
 ## The safety rails
 

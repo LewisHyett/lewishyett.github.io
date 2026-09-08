@@ -1,24 +1,69 @@
 <!-- Render ```mermaid fenced code blocks as diagrams (GitHub Pages does not do this natively).
-     Only included on pages that contain a diagram - see _includes/head.html. -->
+     Only included on pages that contain a diagram - see _includes/head.html.
+
+     Mermaid is ~200 KB brotli across ~24 requests to jsdelivr, arriving as a
+     four-deep waterfall (entry -> shared chunks -> diagram stub -> its chunks).
+     Diagrams sit well down the article, so none of that is fetched on load:
+     an IntersectionObserver starts the import only once a diagram is within
+     about 1.5 viewports, by which point the reader is still scrolling toward it. -->
 <script type="module">
   // Module scripts are deferred, so the document is already parsed here.
-  const blocks = document.querySelectorAll('pre > code.language-mermaid');
+  const blocks = [...document.querySelectorAll('pre > code.language-mermaid')];
 
   if (blocks.length) {
-    // Swap before importing, so the raw source is not visible during the download.
-    blocks.forEach((code) => {
-      const div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = code.textContent;
-      code.parentElement.replaceWith(div);
-    });
+    let started = false;
 
-    // Pin exactly: jsdelivr caches exact versions for a year, ranges for a week.
-    import('https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs')
-      .then(({ default: mermaid }) => {
-        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
-        mermaid.initialize({ startOnLoad: false, theme });
-        return mermaid.run();
+    const render = () => {
+      if (started) return;
+      started = true;
+
+      // Measure first, then swap, so the reads do not interleave with the writes.
+      // Mermaid renders into every .mermaid element in one pass, so all the
+      // blocks change together regardless of which one tripped the observer.
+      const heights = blocks.map((code) => code.parentElement.offsetHeight);
+
+      const swapped = blocks.map((code, i) => {
+        const pre = code.parentElement;
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = code.textContent;
+        // Hold the space the code block occupied, so nothing below it moves
+        // while the diagram downloads and lays out.
+        div.style.minHeight = `${heights[i]}px`;
+        pre.replaceWith(div);
+        return { pre, div };
       });
+
+      // Pin exactly: jsdelivr caches exact versions for a year, ranges for a week.
+      import('https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs')
+        .then(({ default: mermaid }) => {
+          // Follow the page, not the OS: minima 2.5 ships no dark mode and
+          // main.scss defines no prefers-color-scheme rules, so the palette is
+          // light whatever the reader's system preference says. Picking 'dark'
+          // here put a dark diagram on a permanently light page.
+          mermaid.initialize({ startOnLoad: false, theme: 'default' });
+          return mermaid.run({ nodes: swapped.map(({ div }) => div) });
+        })
+        .then(() => {
+          swapped.forEach(({ div }) => { div.style.minHeight = ''; });
+        })
+        .catch(() => {
+          // CDN blocked or offline: put the source back rather than leave a gap.
+          swapped.forEach(({ pre, div }) => div.replaceWith(pre));
+        });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          render();
+        }
+      }, { rootMargin: '150% 0px' });
+
+      blocks.forEach((code) => observer.observe(code.parentElement));
+    } else {
+      render();
+    }
   }
 </script>

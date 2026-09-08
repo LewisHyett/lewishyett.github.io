@@ -40,7 +40,7 @@ three rows configured identically:
 Every column set to "All Fields". Change logging was switched on globally, so all
 three were live.
 
-![Change Log Setup](/assets/images/Change%20Log%20Setup/Change-log-Setup.png)
+![Change Log Setup](/assets/images/ChangeLogSetup/change-log-setup.png){: width="1817" height="242" loading="lazy"}
 
 I doubt anyone set this deliberately. It looks like someone enabled change
 logging, selected "all tables" in a hurry, or copied setup data between
@@ -282,3 +282,9 @@ when triggers or subscribers must run, or when you need each run to stay bounded
 If you look after more than one Business Central environment, it is worth
 spending ten minutes in each one checking the Change Log Setup this week. In my
 experience the same mistakes travel between tenants.
+
+---
+
+**Sample code:** [LewisHyett/BCExamples / Maintenance](https://github.com/LewisHyett/BCExamples/tree/main/Maintenance)
+— both codeunits in full: `TruncateChangeLogEntries` for the one-time clear-out,
+and `DeleteJobQueueLogEntries` for the recurring batched job.
