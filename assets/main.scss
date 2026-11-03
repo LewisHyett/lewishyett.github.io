@@ -188,15 +188,25 @@ h1, h2, h3, h4 { font-weight: 500; }
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
-  min-height: unquote("min(calc(100vh - 80px), 760px)");
-  padding-bottom: 64px;
+  min-height: unquote("min(calc(100vh - 80px), 680px)");
+  padding-bottom: 48px;
 }
 
+/* Long post titles sit here, so smaller than a slogan-sized heading */
 .hero__title {
-  font: 400 64px/1.04 $serif;
+  font: 400 48px/1.08 $serif;
   letter-spacing: -0.03em;
-  margin-bottom: 20px;
+  margin: 12px 0 16px;
 }
+
+.hero__title a,
+.hero__title a:visited {
+  color: $text-color;
+  text-decoration: none;
+  transition: color 160ms var(--ease);
+}
+
+.hero__title a:hover { color: $brand-color; }
 
 .hero__tagline {
   font-size: 19px;
@@ -211,7 +221,7 @@ h1, h2, h3, h4 { font-weight: 500; }
   align-items: center;
 }
 
-/* The one bright element: a contour map drawn in code, the latest post at the summit */
+/* The one bright element: a contour map drawn in code beside the latest post */
 .map {
   position: relative;
   aspect-ratio: 1;
@@ -231,36 +241,6 @@ h1, h2, h3, h4 { font-weight: 500; }
 .route { fill: none; stroke: $brand-color; stroke-width: 1.5; stroke-dasharray: 4 6; }
 .summit-mark { fill: $brand-color; }
 
-.summit,
-.summit:visited {
-  position: absolute;
-  left: 58%;
-  top: 38%;
-  transform: translate(-50%, 20px);
-  width: 240px;
-  padding: 12px 16px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(27, 31, 23, 0.08);
-  color: $text-color;
-  text-decoration: none;
-  transition: border-color 160ms var(--ease);
-}
-
-.summit:hover {
-  border-color: $brand-color;
-  text-decoration: none;
-}
-
-.summit b {
-  display: block;
-  margin-top: 2px;
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 1.35;
-}
-
 .section-title {
   font: 400 32px/1.1 $serif;
   margin-bottom: 24px;
@@ -278,7 +258,6 @@ h1, h2, h3, h4 { font-weight: 500; }
 }
 
 .post-card { display: flex; min-width: 0; }
-.post-card--wide { grid-column: 1 / -1; }
 
 .post-card__link,
 .post-card__link:visited {
@@ -300,12 +279,6 @@ h1, h2, h3, h4 { font-weight: 500; }
   text-decoration: none;
 }
 
-.post-card__text {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .post-card__title {
   font: 500 22px/1.25 $serif;
   color: $text-color;
@@ -316,28 +289,6 @@ h1, h2, h3, h4 { font-weight: 500; }
   color: $grey-color-dark;
 }
 
-.post-card--wide .post-card__title {
-  font-size: 32px;
-  letter-spacing: -0.02em;
-}
-
-.post-card--image .post-card__link {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 32px;
-  align-items: center;
-}
-
-.post-card__image {
-  display: block;
-  width: 100%;
-  max-height: 360px;
-  object-fit: cover;
-  object-position: top;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
@@ -345,18 +296,10 @@ h1, h2, h3, h4 { font-weight: 500; }
     padding: 16px 0 48px;
   }
 
-  .hero__title { font-size: 40px; }
-  .map { justify-self: center; }
-
-  .summit {
-    left: 50%;
-    top: auto;
-    bottom: 0;
-    transform: translateX(-50%);
-  }
+  .hero__title { font-size: 34px; }
+  .map { justify-self: center; max-width: 320px; }
 
   .post-cards { grid-template-columns: 1fr; }
-  .post-card--image .post-card__link { grid-template-columns: 1fr; }
 }
 
 /* ---- Posts and pages ------------------------------------------------- */

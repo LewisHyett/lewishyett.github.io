@@ -3,47 +3,41 @@ layout: default
 title: Home
 ---
 {%- assign latest = site.posts.first -%}
-
+{%- if latest -%}
+{%- assign cat = latest.categories | first -%}
+{%- assign words = latest.content | number_of_words -%}
 <section class="hero">
   <div>
-    <h1 class="hero__title">Understand why it broke, then fix it</h1>
-    <p class="hero__tagline">Business Central and AL notes from a developer who would rather not leave landmines for whoever touches the code six months from now.</p>
+    <span class="meta"><span class="peak"></span> Latest · {{ site.category_names[cat] | default: cat }} · {{ latest.date | date: site.minima.date_format }} · {{ words | divided_by: 230 | at_least: 1 }} min</span>
+    <h1 class="hero__title"><a href="{{ latest.url | relative_url }}">{{ latest.title | escape }}</a></h1>
+    <p class="hero__tagline">{% if latest.description %}{{ latest.description }}{% else %}{{ latest.excerpt | strip_html | truncatewords: 45 }}{% endif %}</p>
     <div class="hero__actions">
-      <a class="btn" href="{{ '/posts/' | relative_url }}">Read the blog</a>
-      <a class="btn btn--text" href="{{ '/about/' | relative_url }}">About me</a>
+      <a class="btn" href="{{ latest.url | relative_url }}">Read it</a>
+      <a class="btn btn--text" href="{{ '/posts/' | relative_url }}">All posts</a>
     </div>
   </div>
-  {%- if latest -%}
   <div class="map">
     <svg id="contours" viewBox="0 0 560 560" aria-hidden="true"></svg>
-    <a class="summit" href="{{ latest.url | relative_url }}">
-      <span class="meta"><span class="peak"></span> Latest · {{ latest.date | date: "%b %-d" }}</span>
-      <b>{{ latest.title | escape }}</b>
-    </a>
   </div>
-  {%- endif -%}
 </section>
+{%- endif -%}
 
-<h2 class="section-title">Recent notes</h2>
+{%- if site.posts.size > 1 -%}
+<h2 class="section-title">Earlier notes</h2>
 <ul class="post-cards">
-  {%- for post in site.posts limit:7 -%}
+  {%- for post in site.posts offset:1 limit:6 -%}
     {%- assign cat = post.categories | first -%}
     {%- assign words = post.content | number_of_words -%}
-    {%- assign mins = words | divided_by: 230 | at_least: 1 -%}
-    <li class="post-card{% if forloop.first %} post-card--wide{% if post.image %} post-card--image{% endif %}{% endif %}">
+    <li class="post-card">
       <a class="post-card__link" href="{{ post.url | relative_url }}">
-        <span class="post-card__text">
-          <span class="meta">{% if forloop.first %}<span class="peak"></span> {% endif %}{{ site.category_names[cat] | default: cat }} · {{ post.date | date: site.minima.date_format }} · {{ mins }} min</span>
-          <span class="post-card__title">{{ post.title | escape }}</span>
-          <span class="post-card__excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 40 }}</span>
-        </span>
-        {%- if forloop.first and post.image -%}
-          <img class="post-card__image" src="{{ post.image | relative_url }}" alt="" loading="lazy">
-        {%- endif -%}
+        <span class="meta">{{ site.category_names[cat] | default: cat }} · {{ post.date | date: site.minima.date_format }} · {{ words | divided_by: 230 | at_least: 1 }} min</span>
+        <span class="post-card__title">{{ post.title | escape }}</span>
+        <span class="post-card__excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 40 }}</span>
       </a>
     </li>
   {%- endfor -%}
 </ul>
+{%- endif -%}
 
 <script>
   // Contour lines: concentric closed curves around a summit, each radius bent by a few fixed sine waves.
