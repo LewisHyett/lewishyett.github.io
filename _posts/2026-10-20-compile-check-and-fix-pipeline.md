@@ -8,6 +8,7 @@ description: >-
   the other fixes those breaks on a branch with GitHub Copilot CLI, proving
   every change by recompiling it before it is kept.
 categories: [devops]
+image: /assets/images/BcCompileCheck/report-repository-worklist.png
 tags: [business-central, azure-devops, pipelines, github-copilot, al, upgrades, powershell, mcp]
 ---
 

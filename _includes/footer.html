@@ -1,0 +1,10 @@
+<footer class="foot">
+  <div class="wrapper foot__inner">
+    <span>{{ site.author_name | default: site.title }} · padel, chess and the occasional mountain</span>
+    <ul class="foot__links">
+      <li><a href="https://github.com/{{ site.github_username }}">GitHub</a></li>
+      <li><a href="mailto:{{ site.email }}">Email</a></li>
+      <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+    </ul>
+  </div>
+</footer>

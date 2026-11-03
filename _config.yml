@@ -5,6 +5,12 @@ description: >-
 baseurl: ""
 url: "https://lewishyett.github.io"
 github_username: lewishyett
+author_name: Lewis Hyett
+
+# Display names for post categories (the front matter uses slugs)
+category_names:
+  devops: DevOps
+  business-central: Business Central
 
 theme: minima
 plugins:
