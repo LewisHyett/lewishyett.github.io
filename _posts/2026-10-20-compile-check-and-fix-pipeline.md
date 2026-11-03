@@ -33,7 +33,7 @@ pipelines:
 
 Here's the end result before we get into how it works:
 
-![The compile check report, Readiness summary tab](/assets/images/BcCompileCheck/report-readiness-summary.png){: loading="lazy"}
+![The compile check report, Readiness summary tab](/assets/images/BcCompileCheck/report-readiness-summary.png){: width="1136" height="885" loading="lazy"}
 
 ## Why I bothered
 
@@ -133,7 +133,7 @@ You can also run it yourself against one project, a group of projects
 (comma-separated wildcards) or a single repo, which is handy just before a
 particular customer's upgrade.
 
-![Running the compile check by hand](/assets/images/BcCompileCheck/compile-check-run-parameters.png){: loading="lazy"}
+![Running the compile check by hand](/assets/images/BcCompileCheck/compile-check-run-parameters.png){: width="416" height="874" loading="lazy"}
 
 A small tip if you build something similar: pass project and repo names to your
 script through **environment variables** rather than pasting them into the
@@ -174,7 +174,7 @@ This is the tab to hand to whoever is doing the fixing. It groups every issue by
 Microsoft removed one table that six customers use, you see that as one problem
 with six places to fix, not six separate problems.
 
-![The Triage by cause tab](/assets/images/BcCompileCheck/report-triage-by-cause.png){: loading="lazy"}
+![The Triage by cause tab](/assets/images/BcCompileCheck/report-triage-by-cause.png){: width="1290" height="905" loading="lazy"}
 
 It also has an **Obsolete objects in use** table: each obsolete object or
 element listed once, whether it's already removed or only marked for removal,
@@ -188,7 +188,7 @@ expanded. Expand any repo to see its issues with the app, AL object, file and
 line. **Copy as work item** gives you Markdown you can paste straight into an
 Azure DevOps work item.
 
-![The Repository worklist with one repo expanded](/assets/images/BcCompileCheck/report-repository-worklist.png){: loading="lazy"}
+![The Repository worklist with one repo expanded](/assets/images/BcCompileCheck/report-repository-worklist.png){: width="855" height="898" loading="lazy"}
 
 ### All issues: everything, with filters
 
@@ -198,7 +198,7 @@ the other filters, which saves a lot of clicking into empty results. Press
 **/** to jump to the search box, and **Export CSV** downloads whatever you're
 looking at.
 
-![The All issues tab with filters applied](/assets/images/BcCompileCheck/report-all-issues.png){: loading="lazy"}
+![The All issues tab with filters applied](/assets/images/BcCompileCheck/report-all-issues.png){: width="1889" height="756" loading="lazy"}
 
 Diagnostic codes link to their Microsoft Learn pages, and new codes need no
 upkeep: the report works out a cause from the compiler's own message.
@@ -271,7 +271,7 @@ When you queue it, you choose what to fix: `Errors`, `Errors+Obsolete` (errors
 plus the AL0432/AL0433/AL0520 obsolete warnings), or a list of specific codes
 such as `AL0432,AL0185`.
 
-![Queuing the fix pipeline](/assets/images/BcCompileCheck/fix-run-parameters.png){: loading="lazy"}
+![Queuing the fix pipeline](/assets/images/BcCompileCheck/fix-run-parameters.png){: width="366" height="875" loading="lazy"}
 
 ### "No new issues" is stricter than it sounds
 
@@ -399,7 +399,7 @@ The *What did not change* section matters most. That's where Copilot says
 things like "the replacement event has a different signature and I couldn't
 verify the mapping", which is exactly where a reviewer should look first.
 
-![A commit made by the fix pipeline](/assets/images/BcCompileCheck/fix-commit-message.png){: loading="lazy"}
+![A commit made by the fix pipeline](/assets/images/BcCompileCheck/fix-commit-message.png){: width="1679" height="820" loading="lazy"}
 
 ### When a run finishes
 
@@ -407,13 +407,13 @@ The run's summary page lists each repo with a link to its branch, and for each
 app: selected issues before and after, new issues, changed lines, rounds used
 and the result (*Committed*, *Reverted: …*, *Nothing to fix* or *Blocked: …*).
 
-![The fix pipeline's run summary](/assets/images/BcCompileCheck/fix-run-summary.png){: loading="lazy"}
+![The fix pipeline's run summary](/assets/images/BcCompileCheck/fix-run-summary.png){: width="956" height="315" loading="lazy"}
 
 The artifact holds a `.patch` per repo, every Copilot log, and two copies of
 the report: `before\report.html` and `fix\after-report.html`, so you can see
 side by side what changed.
 
-![The after-report from a fix run](/assets/images/BcCompileCheck/fix-after-report.png){: loading="lazy"}
+![The after-report from a fix run](/assets/images/BcCompileCheck/fix-after-report.png){: width="1118" height="885" loading="lazy"}
 
 The run also goes orange (*partially succeeded*) rather than green when
 something needs a look: a push failed, a repo was skipped, Copilot itself
