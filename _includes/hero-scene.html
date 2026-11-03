@@ -1,0 +1,82 @@
+<!-- Hero scene: a Swiss peak after the Matterhorn, drawn in code. Pines are added by the script so the markup stays short. -->
+<svg class="hero__scene" viewBox="0 0 1600 900" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#dfe7e6"/>
+        <stop offset="0.65" stop-color="#eef0ea"/>
+        <stop offset="1" stop-color="#f4f5ef"/>
+      </linearGradient>
+      <linearGradient id="lit" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f3eee2"/>
+        <stop offset="1" stop-color="#c9c6b6"/>
+      </linearGradient>
+      <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8e9894"/>
+        <stop offset="1" stop-color="#6d7672"/>
+      </linearGradient>
+      <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f4f5ef" stop-opacity="0"/>
+        <stop offset="1" stop-color="#f4f5ef" stop-opacity="0.85"/>
+      </linearGradient>
+      <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f4f5ef" stop-opacity="0"/>
+        <stop offset="1" stop-color="#f4f5ef"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="1600" height="900" fill="url(#sky)"/>
+
+    <!-- Far range, pale with distance, kept low on the left so the text sits on clear sky -->
+    <path d="M0 600 L140 575 L260 590 L380 560 L500 585 L640 545 L760 570 L860 520 L960 555 L1040 500 L1100 530 L1300 470 L1400 500 L1480 460 L1600 495 L1600 900 L0 900 Z" fill="#d6dcd9"/>
+
+    <!-- The peak, after the Matterhorn: a crooked summit, the Hörnli ridge in sun on the left, the north face in shadow -->
+    <path d="M1150 150 L1136 160 L1124 186 L1112 214 L1096 250 L1082 288 L1062 320 L1050 348 L1030 378 L1004 408 L988 438 L954 468 L932 498 L898 532 L862 568 L820 610 L760 680 L700 760
+             L1230 760 L1210 560 L1196 450 L1180 330 L1170 230 L1162 180 Z" fill="url(#lit)"/>
+    <path d="M1150 150 L1162 180 L1170 230 L1180 330 L1196 450 L1210 560 L1230 760 L1600 760 L1600 700 L1540 640 L1470 572 L1420 522 L1380 482 L1352 452 L1330 422 L1300 390 L1272 354 L1252 330 L1236 300 L1222 264 L1206 236 L1196 212 L1186 186 L1176 160 L1162 147 Z" fill="url(#shade)"/>
+    <!-- Rock bands on the lit face -->
+    <g fill="none" stroke="#a9a796" stroke-width="1.5" opacity="0.7">
+      <path d="M1060 330 L1110 318 L1168 300"/>
+      <path d="M990 440 L1060 428 L1120 420 L1188 412"/>
+      <path d="M900 535 L980 522 L1080 515 L1204 506"/>
+    </g>
+    <!-- Snow held in the gullies -->
+    <g fill="none" stroke="#fbfbf7" stroke-linecap="round" opacity="0.9">
+      <path d="M1150 160 L1138 200 L1120 240" stroke-width="5"/>
+      <path d="M1160 260 L1130 300 L1100 330" stroke-width="3"/>
+      <path d="M1176 360 L1140 390 L1090 400" stroke-width="3"/>
+      <path d="M1192 470 L1150 485 L1080 495" stroke-width="2.5"/>
+      <path d="M1200 230 L1230 290" stroke-width="3" opacity="0.55"/>
+      <path d="M1210 350 L1260 400 L1300 440" stroke-width="2.5" opacity="0.45"/>
+      <path d="M1225 470 L1290 520 L1340 560" stroke-width="2" opacity="0.4"/>
+    </g>
+    <!-- The route up the Hörnli ridge, the site's signature -->
+    <path d="M760 690 L830 612 L900 540 L960 470 L1010 410 L1052 350 L1090 268 L1118 205 L1146 158" fill="none" stroke="#4f6b3a" stroke-width="2" stroke-dasharray="5 7"/>
+    <path d="M1141 146 L1150 130 L1159 146 Z" fill="#4f6b3a"/>
+
+    <!-- Valley mist in front of the peak's foot -->
+    <rect x="0" y="560" width="1600" height="170" fill="url(#mist)"/>
+
+    <!-- Mid hills -->
+    <path d="M0 700 C 180 640, 320 660, 460 690 S 760 640, 920 680 S 1240 650, 1400 690 S 1560 670, 1600 680 L1600 900 L0 900 Z" fill="#a9b39f"/>
+    <path d="M0 760 C 200 720, 380 740, 560 770 S 900 720, 1100 750 S 1440 730, 1600 760 L1600 900 L0 900 Z" fill="#7d8c70"/>
+
+    <!-- Pine line, filled in by the script below -->
+    <g id="pines" fill="#4a5a37"></g>
+
+    <!-- Melt into the page so there is no hard edge -->
+    <rect x="0" y="800" width="1600" height="100" fill="url(#fade)"/>
+  </svg>
+<script>
+(function () {
+  // Pines along the lower hill: fixed pseudo-random sizes so every load looks the same.
+  var seed = 7;
+  var rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  var d = '';
+  for (var x = -10; x < 1610; x += 5 + rnd() * 8) {
+    var base = 808 + rnd() * 10 - Math.sin(x / 260) * 18;
+    var h = 18 + rnd() * 22, w = h * 0.3;
+    d += `M${x.toFixed(1)} ${(base - h).toFixed(1)} L${(x + w).toFixed(1)} ${base.toFixed(1)} L${(x - w).toFixed(1)} ${base.toFixed(1)} Z `;
+  }
+  document.getElementById('pines').innerHTML = `<path d="${d}"/>`;
+})();
+</script>

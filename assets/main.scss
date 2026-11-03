@@ -183,14 +183,42 @@ h1, h2, h3, h4 { font-weight: 500; }
 
 /* ---- Landing page ---------------------------------------------------- */
 
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-  min-height: unquote("min(calc(100vh - 80px), 680px)");
-  padding-bottom: 48px;
+/* The one bright element: a full-width scene, a Swiss peak drawn in code
+   (_includes/hero-scene.html), with the latest post on its empty sky.
+   The hero runs edge to edge and slides up under the header so the sky
+   reaches the top of the page. */
+.top {
+  position: relative;
+  z-index: 2;
 }
+
+.page-content { overflow-x: clip; }   /* the 100vw hero must not add a sideways scroll */
+
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -80px;                   /* header 64 + .page-content top padding 16 */
+  margin-bottom: 32px;
+  min-height: unquote("min(100vh, 860px)");
+  overflow: hidden;
+}
+
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero__copy {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 176px 32px 0;
+}
+
+.hero__copy > * { max-width: 540px; }
 
 /* Long post titles sit here, so smaller than a slogan-sized heading */
 .hero__title {
@@ -209,9 +237,8 @@ h1, h2, h3, h4 { font-weight: 500; }
 .hero__title a:hover { color: $brand-color; }
 
 .hero__tagline {
-  font-size: 19px;
+  font-size: 18px;
   color: $grey-color-dark;
-  max-width: 34rem;
   margin-bottom: 32px;
 }
 
@@ -221,25 +248,25 @@ h1, h2, h3, h4 { font-weight: 500; }
   align-items: center;
 }
 
-/* The one bright element: a contour map drawn in code beside the latest post */
-.map {
-  position: relative;
-  aspect-ratio: 1;
-  width: 100%;
-  max-width: 560px;
-  justify-self: end;
-}
+/* On phones the text takes the top and the scene sits below it, not behind it */
+@media (max-width: 860px) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: #dfe7e6;               /* the top colour of the sky, so there is no seam */
+  }
 
-.map svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+  .hero__scene {
+    position: relative;
+    order: 2;
+    height: 400px;
+  }
 
-.contour { fill: none; stroke: rgba(27, 31, 23, 0.16); stroke-width: 1; }
-.contour--major { stroke-width: 1.5; }
-.route { fill: none; stroke: $brand-color; stroke-width: 1.5; stroke-dasharray: 4 6; }
-.summit-mark { fill: $brand-color; }
+  .hero__copy { padding: 120px 16px 0; }
+  .hero__title { font-size: 34px; }
+  .hero__tagline { font-size: 16px; }
+}
 
 .section-title {
   font: 400 32px/1.1 $serif;
@@ -290,15 +317,6 @@ h1, h2, h3, h4 { font-weight: 500; }
 }
 
 @media (max-width: 860px) {
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: 0;
-    padding: 16px 0 48px;
-  }
-
-  .hero__title { font-size: 34px; }
-  .map { justify-self: center; max-width: 320px; }
-
   .post-cards { grid-template-columns: 1fr; }
 }
 
